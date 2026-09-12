@@ -10,7 +10,9 @@ __pycache__/
 venv/
 
 # Data & artifacts (never commit the 5M-row dataset or checkpoints)
-data/
+# `/data/`, not `data/`: a bare rule would also exclude tests/data/, and files
+# inside an excluded directory cannot be un-ignored by the negation below.
+/data/
 *.parquet
 *.csv
 !tests/**/*.csv

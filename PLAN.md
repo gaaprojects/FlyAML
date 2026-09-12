@@ -4,7 +4,7 @@
 > [`4-money-connectome-spec.md`](./4-money-connectome-spec.md).
 > This file is the source of truth for **what to do next**. Update the checkboxes as work lands.
 
-**Owner:** Gaspar Astorga · **Plan created:** 2026-09-12 · **Status:** P0 not started
+**Owner:** Gaspar Astorga · **Plan created:** 2026-09-12 · **Status:** P0 scaffolding done (2026-09-12); P0 acceptance criteria pending the first Kaggle run
 
 ---
 
@@ -65,12 +65,12 @@ money-connectome/            # (this repo root)
 Legend: `[ ]` todo · `[~]` in progress · `[x]` done.
 
 ### P0 · Setup (M0) — local + Kaggle
-- [ ] Scaffold repo: structure above, `pyproject.toml`, `requirements.txt`, `.gitignore`, pytest config.
-- [ ] Module stubs with docstrings for all six `moneyconn/` files.
-- [ ] `load.py`: compact-dtype loader + patterns-file parser.
-- [ ] Toy fixtures + first tests wired so `pytest` runs green locally.
-- [ ] `kaggle_01_build_graph.ipynb` skeleton with the AML dataset attached; `pip install` the package from GitHub.
-- **AC:** loader reads ~5.08M rows; laundering share ≈ 0.1%; peak RAM logged; degree distributions plotted.
+- [x] Scaffold repo: structure above, `pyproject.toml`, `requirements.txt`, `.gitignore`, pytest config.
+- [x] Module stubs with docstrings for all six `moneyconn/` files.
+- [x] `load.py`: compact-dtype loader + patterns-file parser (+ peak-RAM/timing `log_step`).
+- [x] Toy fixtures + first tests wired so `pytest` runs green locally — 26 tests, 0.4 s.
+- [~] `kaggle_01_build_graph.ipynb` skeleton written; still to do **on Kaggle**: attach the AML dataset, push tag `v0.1.0` so the `pip install` resolves, run it.
+- **AC:** loader reads ~5.08M rows; laundering share ≈ 0.1%; peak RAM logged; degree distributions plotted. → *verifiable only on Kaggle; notebook §4 asserts all three numbers and §6 plots the distributions.*
 
 ### P1 · Graph (M1) — local logic, Kaggle run
 - [ ] `graph.py`: aggregate to directed weighted edges → parquet checkpoint; build igraph; keep raw timestamped edge list.
@@ -127,10 +127,18 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done.
 
 ## 6. Immediate next step
 
-**P0 scaffolding**, all local and safe on the laptop:
-1. Create repo structure + `pyproject.toml` / `requirements.txt` / `.gitignore` / pytest config.
-2. Module stubs with docstrings.
-3. Implement `load.py` + toy fixtures + first passing test.
-4. Draft `kaggle_01_build_graph.ipynb` skeleton.
+P0 scaffolding is done locally (package installs, 26 toy tests green). What is left is
+the half that needs Kaggle:
 
-Then point `kaggle_01` at the real dataset and confirm the P0 acceptance criteria.
+1. Merge `Develop` → `Master` and tag **`v0.1.0`**, so the notebook's
+   `pip install "git+https://github.com/gaaprojects/FlyAML.git@v0.1.0"` resolves.
+   (While iterating, the notebook has a commented `@Develop` line.)
+2. Create the Kaggle notebook from `notebooks/kaggle_01_build_graph.ipynb`, attach
+   `ealtman2019/ibm-transactions-for-anti-money-laundering-aml`, internet **on**, CPU.
+3. Run it and confirm the P0 acceptance criteria: ~5.08M rows, ~515k accounts,
+   laundering share ≈ 0.1%, peak RAM logged, degree distributions plotted.
+4. Note the dataset license from the Kaggle page (blocking only for publishing
+   derived data).
+
+Then P1: implement `graph.py` (aggregate → parquet checkpoint → igraph) with toy tests,
+and un-comment §7 of the notebook.
