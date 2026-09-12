@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Environments
+.venv/
+venv/
+
+# Data & artifacts (never commit the 5M-row dataset or checkpoints)
+data/
+*.parquet
+*.csv
+!tests/**/*.csv
